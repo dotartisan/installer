@@ -5,7 +5,13 @@ namespace Dotartisan\Installer\Contracts;
 interface InstallServiceContract
 {
     /**
-     * REQUIREMENTS STEP
+     * ITEM METADATA (install needs these for purchase provider + display)
+     */
+    public function product(): string;
+    public function version(): string;
+
+    /**
+     * STEP 1: REQUIREMENTS
      */
     public function minPhpVersion(): string;
 
@@ -19,14 +25,14 @@ interface InstallServiceContract
     public function afterRequirementsCheck(bool $satisfied, array $extensions, array $directories): void;
 
     /**
-     * PURCHASE STEP
+     * STEP 2: PURCHASE
      */
     public function beforePurchaseRedirect(): void;
     public function afterPurchaseStored(string $code): void;
 
     /**
-     * DATABASE STEP
-     * Return modified input if needed.
+     * STEP 3: DATABASE + ADMIN + APP SETUP
+     * Allow modifying input arrays before use.
      */
     public function beforeDatabaseSetup(array $db): array;
     public function afterDatabaseEnvWritten(array $db): void;
@@ -34,38 +40,25 @@ interface InstallServiceContract
     public function beforeMigrateAndSeed(): void;
     public function afterMigrateAndSeed(): void;
 
-    /**
-     * Extra commands after migrate/seed.
-     * @return array<int, array{command:string, params?:array}>
-     */
+    /** @return array<int, array{command:string, params?:array}> */
     public function extraDatabaseCommands(): array;
 
-    /**
-     * ADMIN STEP
-     * Return modified input if needed.
-     */
     public function beforeAdminSetup(array $admin): array;
-
-    /**
-     * Item-specific admin creation (this is the main variation point).
-     */
     public function createAdmin(array $admin): void;
-
     public function afterAdminSetup(array $admin): void;
 
-    /**
-     * APP/ENV STEP
-     * Return modified input if needed.
-     */
     public function beforeAppSetup(array $website): array;
 
-    /**
-     * Item-specific env keys to write.
-     * @return array<string, scalar|null>
-     */
+    /** @return array<string, scalar|null> */
     public function envKeys(array $website): array;
 
     public function afterEnvWritten(array $website): void;
+
+    /**
+     * STEP 4: FINISH
+     */
+    public function beforeFinish(): void;
+    public function afterFinish(): void;
 
     /**
      * GENERAL

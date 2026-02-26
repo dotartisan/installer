@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Helpers\Classes;
+
+use Dotartisan\Installer\Services\Install\AbstractInstallService;
+use App\Models\User;
+
+class InstallerInstallService extends AbstractInstallService
+{
+    public function product(): string
+    {
+        return 'your-item-slug';
+    }
+
+    public function version(): string
+    {
+        return '1.0.0';
+    }
+
+    public function createAdmin(array $admin): void
+    {
+        // implement your item admin creation
+        $user = new User();
+        $user->name = $admin['name'];
+        $user->email = $admin['email'];
+        $user->password = bcrypt($admin['password']);
+        $user->save();
+    }
+
+    public function envKeys(array $website): array
+    {
+        return [
+            'APP_NAME' => $website['app_name'] ?? 'My App',
+            'APP_URL' => url('/'),
+        ];
+    }
+
+    public function settings(array $website): array
+    {
+        return [
+            'app_name' => $website['app_name'] ?? 'My App',
+        ];
+    }
+}

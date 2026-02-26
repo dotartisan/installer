@@ -50,13 +50,14 @@ abstract class AbstractInstallService implements InstallServiceContract
     {
         return $website;
     }
-
     public function envKeys(array $website): array
     {
         return [];
     }
-
     public function afterEnvWritten(array $website): void {}
+
+    public function beforeFinish(): void {}
+    public function afterFinish(): void {}
 
     public function beforeOptimize(): void {}
     public function afterOptimize(): void {}

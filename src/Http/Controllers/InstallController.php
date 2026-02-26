@@ -102,8 +102,8 @@ class InstallController extends Controller
     {
         $route = Route::current()->getName();
 
-        if (config('artisan.installed')) {
-            return redirect()->route('front.index');
+        if (config('installer.installed')) {
+            return redirect(config('installer.redirect_after_install', '/'));
         }
 
         if (!$requirement->satisfied()) {

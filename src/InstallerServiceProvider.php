@@ -81,12 +81,16 @@ class InstallerServiceProvider extends ServiceProvider
                 return app($class);
             }
 
-            // fallback: safe no-op implementation
             return new class extends AbstractInstallService {
-                public function createAdmin(array $admin): void
+                public function product(): string
                 {
-                    // No-op fallback
+                    return 'unknown-item';
                 }
+                public function version(): string
+                {
+                    return '0.0.0';
+                }
+                public function createAdmin(array $admin): void {}
             };
         });
     }

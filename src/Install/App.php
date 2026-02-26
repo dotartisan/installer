@@ -2,71 +2,65 @@
 
 namespace Dotartisan\Installer\Install;
 
-use Setting;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Cache;
+use Dotartisan\Installer\Contracts\InstallServiceContract;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Cache;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
+use Setting;
 
 class App
 {
-    public function setup($data)
+    public function __construct(protected InstallServiceContract $service) {}
+
+    public function setup(array $website): void
     {
+        $website = $this->service->beforeAppSetup($website);
+
         $this->generateAppKey();
-        $this->setAppSettings($data);
-        $this->createStorageFolder();
-        $this->setEnvVariables($data);
-        $this->optimizeApp();
+        $this->storageLink();
+        $this->writeEnvAndSettings($website);
+        $this->optimize();
+
+        // if you want an after hook after everything in App step:
+        $this->service->afterEnvWritten($website);
     }
 
-    private function generateAppKey()
+    private function generateAppKey(): void
     {
         Artisan::call('key:generate', ['--force' => true]);
     }
 
-    private function setEnvVariables($data)
+    private function storageLink(): void
     {
-        $env = DotenvEditor::load();
-
-        $facebook_redirect = secure_url(URL::route('social.login.callback', ['provider' => 'facebook'], false));
-        $google_redirect = secure_url(URL::route('social.login.callback', ['provider' => 'google'], false));
-
-        $env->setKey('APP_URL', url('/'));
-        $env->setKey('APP_NAME', $data['app_name']);
-        $env->setKey('APP_ENV', 'production');
-        $env->setKey('APP_DEBUG', 'true');
-        $env->setKey('DEBUGBAR_ENABLED', 'false');
-        $env->setKey('MAIL_MAILER', 'mail');
-        $env->setKey('MAIL_FROM_NAME', $data['app_name']);
-        $env->setKey('MAIL_FROM_ADDRESS', $data['app_email']);
-        $env->setKey('FACEBOOK_URL', $facebook_redirect);
-        $env->setKey('GOOGLE_URL', $google_redirect);
-
-        $env->save();
-    }
-
-    private function setAppSettings($data)
-    {
-        Setting::set('app_url', url('/'));
-        Setting::set('app_name', $data['app_name']);
-        Setting::set('meta_title', $data['app_name']);
-        Setting::set('website_email', $data['app_email']);
-        if (Session::has('purchase_code')) {
-            Setting::set('purchase_code', Session::get('purchase_code'));
-        }
-
-        Setting::save();
-    }
-
-    private function createStorageFolder()
-    {
+        // Keep if your items rely on it
         Artisan::call('storage:link');
     }
 
-    private function optimizeApp()
+    private function writeEnvAndSettings(array $website): void
     {
-        Artisan::call('optimize');
+        $env = DotenvEditor::load();
+        foreach ($this->service->envKeys($website) as $k => $v) {
+            $env->setKey((string) $k, (string) ($v ?? ''));
+        }
+
+        $env->save();
+
+        $settings = $this->service->settings($website);
+        if (!empty($settings)) {
+            foreach ($settings as $key => $value) {
+                Setting::set($key, $value);
+            }
+            Setting::save();
+        }
+    }
+
+    private function optimize(): void
+    {
+        $this->service->beforeOptimize();
+
         Cache::flush();
+        Artisan::call('optimize');
+
+        $this->service->afterOptimize();
     }
 }

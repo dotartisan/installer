@@ -7,7 +7,7 @@
     @include('installer::messages')
 
     @php
-        $isEnvato = config('artisan.source') === 'envato';
+        $isEnvato = config('installer.source') === 'envato';
         $canProceed = $requirement->satisfied() && $verifyPurchase->satisfied();
     @endphp
 

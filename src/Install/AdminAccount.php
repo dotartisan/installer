@@ -2,19 +2,19 @@
 
 namespace Dotartisan\Installer\Install;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Dotartisan\Installer\Contracts\InstallServiceContract;
 
 class AdminAccount
 {
-    public function setup($data)
-    {
-        $admin = User::find(1);
-        $admin->name = $data['name'];
-        $admin->email = $data['email'];
-        $admin->password = bcrypt($data['password']);
-        $admin->save();
+    public function __construct(protected InstallServiceContract $service) {}
 
-        Auth::login($admin);
+    public function setup(array $admin): void
+    {
+        $admin = $this->service->beforeAdminSetup($admin);
+
+        // Item decides how to create admin user (model, roles, etc.)
+        $this->service->createAdmin($admin);
+
+        $this->service->afterAdminSetup($admin);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Helpers\Classes;
 
 use Dotartisan\Installer\Contracts\UpdateServiceContract;
 
-class UpdateService implements UpdateServiceContract
+class InstallerUpdateService implements UpdateServiceContract
 {
     public function product(): string
     {

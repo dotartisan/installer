@@ -5,7 +5,8 @@ return [
     'source' => env('APP_SOURCE', 'envato'),
     'redirect_after_install' => '/',
 
-    'installer_service' => \Dotartisan\Installer\Services\DefaultInstallerService::class,
+    'update_service' => \Dotartisan\Installer\Services\DefaultUpdateService::class,
+    'install_service' => \Dotartisan\Installer\Services\Install\AbstractInstallService::class,
 
     /*
     |--------------------------------------------------------------------------

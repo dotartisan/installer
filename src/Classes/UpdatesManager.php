@@ -2,15 +2,15 @@
 
 namespace Dotartisan\Installer\Classes;
 
-use Theme;
-use Setting;
-use ZipArchive;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
+use Dotartisan\Installer\Contracts\UpdateServiceContract;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
-use Dotartisan\Installer\Contracts\InstallerServiceContract;
+use Setting;
+use Theme;
+use ZipArchive;
 
 if (!defined('STDIN')) {
     define('STDIN', fopen('php://stdin', 'r'));
@@ -44,12 +44,12 @@ class UpdatesManager
     /**
      * Item service (App-specific)
      */
-    protected InstallerServiceContract $item;
+    protected UpdateServiceContract $item;
 
     /**
-     * @param InstallerServiceContract $item
+     * @param UpdateServiceContract $item
      */
-    public function __construct(InstallerServiceContract $item)
+    public function __construct(UpdateServiceContract $item)
     {
         $this->item = $item;
 

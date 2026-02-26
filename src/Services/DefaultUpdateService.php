@@ -1,30 +1,23 @@
 <?php
 
-namespace App\Helpers\Classes;
+namespace Dotartisan\Installer\Services;
 
-use Dotartisan\Installer\Contracts\InstallerServiceContract;
+use Dotartisan\Installer\Contracts\UpdateServiceContract;
 
-class InstallerService implements InstallerServiceContract
+class DefaultUpdateService implements UpdateServiceContract
 {
     public function product(): string
     {
-        return 'monster-tools';
+        return 'unknown-item';
     }
 
     public function version(): string
     {
-        return '3.4.2';
+        return '0.0.0';
     }
 
-    public function beforeRunUpdate(): void
-    {
-        // e.g. backup database, put app in maintenance, etc.
-    }
-
-    public function afterRunUpdate(bool $success, array $context = []): void
-    {
-        // e.g. notify admin, write logs, etc.
-    }
+    public function beforeRunUpdate(): void {}
+    public function afterRunUpdate(bool $success, array $context = []): void {}
 
     public function beforeOptimize(): void {}
     public function afterOptimize(): void {}

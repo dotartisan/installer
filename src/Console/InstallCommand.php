@@ -20,9 +20,9 @@ class InstallCommand extends Command
             '--force' => (bool) $this->option('force'),
         ]);
 
-        $stub = __DIR__ . '/../../stubs/InstallerService.stub';
+        $stub = __DIR__ . '/../../stubs/UpdateService.stub';
         $targetDir = app_path('Helpers/Classes');
-        $target = $targetDir . DIRECTORY_SEPARATOR . 'InstallerService.php';
+        $target = $targetDir . DIRECTORY_SEPARATOR . 'UpdateService.php';
 
         if (! $fs->exists($stub)) {
             $this->error("Stub not found: {$stub}");
@@ -38,13 +38,8 @@ class InstallCommand extends Command
         $fs->ensureDirectoryExists($targetDir);
         $fs->put($target, $fs->get($stub));
 
-        $this->info('✅ InstallerService created.');
+        $this->info('✅ Update Service created.');
         $this->line("Path: {$target}");
-
-        $this->line('');
-        $this->line('Set these in config/dotartisan.php (or .env):');
-        $this->line('  DOTARTISAN_ITEM_PRODUCT=monster-tools');
-        $this->line('  DOTARTISAN_ITEM_VERSION=3.4.2');
 
         return self::SUCCESS;
     }

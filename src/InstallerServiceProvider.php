@@ -2,8 +2,10 @@
 
 namespace Dotartisan\Installer;
 
-use Dotartisan\Installer\Contracts\InstallerServiceContract;
-use Dotartisan\Installer\Services\DefaultInstallerService;
+use Dotartisan\Installer\Contracts\InstallServiceContract;
+use Dotartisan\Installer\Contracts\UpdateServiceContract;
+use Dotartisan\Installer\Services\DefaultUpdateService;
+use Dotartisan\Installer\Services\Install\AbstractInstallService;
 use Illuminate\Support\ServiceProvider;
 
 class InstallerServiceProvider extends ServiceProvider
@@ -42,7 +44,9 @@ class InstallerServiceProvider extends ServiceProvider
             ], 'lang');
 
             // Registering package commands.
-            // $this->commands([]);
+            $this->commands([
+                \Dotartisan\Installer\Console\InstallCommand::class,
+            ]);
         }
     }
 
@@ -59,15 +63,31 @@ class InstallerServiceProvider extends ServiceProvider
             return new Installer;
         });
 
-        $this->app->singleton(InstallerServiceContract::class, function () {
+        $this->app->singleton(UpdateServiceContract::class, function () {
             // Allow apps to override via config binding:
-            $class = config('installer.installer_service');
+            $class = config('installer.update_service');
 
             if (is_string($class) && class_exists($class)) {
                 return app($class);
             }
 
-            return new DefaultInstallerService();
+            return new DefaultUpdateService();
+        });
+
+        $this->app->singleton(InstallServiceContract::class, function () {
+            $class = config('installer.install_service');
+
+            if (class_exists($class)) {
+                return app($class);
+            }
+
+            // fallback: safe no-op implementation
+            return new class extends AbstractInstallService {
+                public function createAdmin(array $admin): void
+                {
+                    // No-op fallback
+                }
+            };
         });
     }
 }

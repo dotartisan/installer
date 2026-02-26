@@ -2,7 +2,7 @@
 
 namespace Dotartisan\Installer\Contracts;
 
-interface InstallerServiceContract
+interface UpdateServiceContract
 {
     // Item-specific values
     public function product(): string;

@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Helpers\Classes;
+
+use Dotartisan\Installer\Contracts\InstallerServiceContract;
+
+class InstallerService implements InstallerServiceContract
+{
+    public function product(): string
+    {
+        return 'monster-tools';
+    }
+
+    public function version(): string
+    {
+        return '3.4.2';
+    }
+
+    public function beforeRunUpdate(): void
+    {
+        // e.g. backup database, put app in maintenance, etc.
+    }
+
+    public function afterRunUpdate(bool $success, array $context = []): void
+    {
+        // e.g. notify admin, write logs, etc.
+    }
+
+    public function beforeOptimize(): void {}
+    public function afterOptimize(): void {}
+
+    public function beforeMigrate(): void {}
+    public function afterMigrate(): void {}
+
+    public function beforeRebuildTheme(): void {}
+    public function afterRebuildTheme(): void {}
+
+    public function beforeUpdateAppVersion(): void {}
+    public function afterUpdateAppVersion(): void {}
+
+    public function beforeDisableUpdateAlert(): void {}
+    public function afterDisableUpdateAlert(): void {}
+}

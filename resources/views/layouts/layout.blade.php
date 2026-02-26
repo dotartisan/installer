@@ -9,7 +9,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:regular,300,600,700&display=swap">
-    @vite(['resources/themes/admin/assets/sass/app.scss', 'resources/themes/default/assets/sass/install.scss', 'resources/themes/admin/assets/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('vendor/installer/installer.css') }}">
+    <script src="{{ asset('vendor/installer/installer.js') }}" defer></script>
 </head>
 
 <body class="layout-guest">

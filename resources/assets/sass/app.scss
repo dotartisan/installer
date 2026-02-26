@@ -1,0 +1,216 @@
+// Override Boostrap variables
+@import "bootstrap/scss/bootstrap";
+@import "variables"; // Bootstrap
+
+.left-sidebar {
+    width: 28%;
+    background: $gray-base;
+    float: left;
+    max-width: 250px !important;
+
+    >.list-inline {
+        margin: 125px 0 0;
+        padding: 0 30px !important;
+    }
+
+    li {
+        position: relative;
+        display: block;
+        float: none;
+        color: $gray-100;
+        padding: 10px 0 10px 36px;
+        cursor: default;
+
+        &:after {
+            position: absolute;
+            content: "";
+            left: 0;
+            top: 9px;
+            height: 24px;
+            width: 24px;
+            text-align: center;
+            border: 2px solid $gray-300;
+            border-radius: 50%;
+        }
+
+        &.active {
+            font-weight: 600;
+            color: $white;
+
+            &:after {
+                border: 2px solid $success;
+            }
+        }
+
+        &.complete {
+            color: $success;
+
+            &:after {
+                position: absolute;
+                background-color: $success;
+                border-color: $success !important;
+            }
+
+            &:before {
+                position: absolute;
+                content: "✓";
+                color: #fff;
+                left: 6px;
+                z-index: 1;
+            }
+        }
+    }
+}
+
+.content-wrapper {
+    width: 72%;
+    min-height: 100vh;
+    margin: 0 auto;
+
+    >.content {
+        margin: 33px 0;
+        padding: 0 30px;
+    }
+
+    .btn.disabled,
+    .btn:disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+}
+
+.box {
+    margin-top: 30px;
+    background: #fff;
+    padding: 30px;
+
+    >p {
+        margin-bottom: 12px;
+    }
+
+    .table tr>td {
+        &:last-child>i {
+            font-size: 20px;
+        }
+
+        >i {
+            &.fa-check {
+                color: $success;
+            }
+
+            &.fa-times {
+                color: $danger;
+            }
+        }
+    }
+}
+
+.install-complete {
+    padding: 100px 0;
+}
+
+.installation-message {
+    margin: 30px 0 60px;
+
+    >i {
+        font-size: 80px;
+        color: $success;
+    }
+}
+
+.visit {
+    display: block;
+    padding: 60px;
+    border-radius: 3px;
+    border: 1px solid $border-color;
+    transition: 200ms ease-in-out;
+    text-decoration: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+        text-decoration: none;
+    }
+
+    .install-icon {
+        display: block;
+        text-align: center;
+        margin-bottom: 1rem;
+
+        >i {
+            font-size: 48px;
+            color: $gray-300;
+            transition: 200ms ease-in-out;
+        }
+    }
+
+    &:hover {
+        border-color: rgba(49, 98, 159, 0.2);
+
+        .install-icon>i {
+            color: $primary;
+        }
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .left-sidebar {
+        border-right: none;
+    }
+}
+
+@media screen and (max-width: 940px) {
+    .install-complete {
+        padding: 60px 0;
+    }
+
+    .installer-wrapper {
+        height: auto;
+        padding: 15px;
+
+        >.wrapper {
+            height: auto;
+            width: 100%;
+        }
+    }
+
+    .left-sidebar {
+        height: auto;
+        width: 100%;
+
+        >.list-inline {
+            margin-bottom: 25px;
+        }
+    }
+
+    .content-wrapper {
+        width: 100%;
+
+        >.content {
+            height: auto;
+        }
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .install-complete {
+        padding: 30px 0;
+    }
+
+    .table-responsive {
+        border: none;
+        margin-bottom: 0;
+    }
+
+    .form-horizontal .control-label {
+        padding-top: 0;
+    }
+
+    .configure-form {
+        padding-top: 15px;
+    }
+
+    .visit-wrapper>.row>.col-sm-6:last-child>.visit {
+        margin-top: 30px;
+    }
+}

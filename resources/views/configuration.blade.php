@@ -1,9 +1,9 @@
-@extends('install.layout')
+@extends('installer::layout')
 
 @section('content')
     <h2>3. Configuration</h2>
     <hr>
-    @include ('install.messages')
+    @include ('installer::messages')
     <form method="POST" action="{{ route('installconfig.post') }}" class="form-horizontal">
         @csrf
         <div class="card mb-4">

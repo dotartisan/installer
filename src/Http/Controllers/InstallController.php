@@ -23,7 +23,7 @@ class InstallController extends Controller
     {
         $route = Route::current()->getName();
 
-        return view('install.pre_installation', compact('requirement', 'route'));
+        return view('installer::pre_installation', compact('requirement', 'route'));
     }
 
     public function verifyPurchase(Requirement $requirement, VerifyPurchase $verifyPurchase)
@@ -34,7 +34,7 @@ class InstallController extends Controller
             return redirect('/install/pre-installation');
         }
 
-        return view('install.purchase', compact('requirement', 'verifyPurchase', 'route'));
+        return view('installer::purchase', compact('requirement', 'verifyPurchase', 'route'));
     }
 
     public function registerPurchase(Request $request, Requirement $requirement, ArtisanApi $artisan)
@@ -75,7 +75,7 @@ class InstallController extends Controller
             return redirect('/install/verify');
         }
 
-        return view('install.configuration', compact('requirement', 'verifyPurchase', 'route'));
+        return view('installer::configuration', compact('requirement', 'verifyPurchase', 'route'));
     }
 
     public function postConfiguration(
@@ -118,7 +118,7 @@ class InstallController extends Controller
 
         $this->optimizeApp();
 
-        return view('install.complete', compact('route'));
+        return view('installer::complete', compact('route'));
     }
 
     private function optimizeApp()

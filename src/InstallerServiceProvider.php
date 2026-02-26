@@ -33,7 +33,7 @@ class InstallerServiceProvider extends ServiceProvider
 
             // Publishing assets.
             $this->publishes([
-                __DIR__ . '/../resources/assets' => public_path('vendor/installer'),
+                __DIR__ . '/../resources/dist' => public_path('vendor/installer'),
             ], 'assets');
 
             // Publishing the translation files.

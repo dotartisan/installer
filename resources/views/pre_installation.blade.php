@@ -1,9 +1,9 @@
-@extends('install.layout')
+@extends('installer::layout')
 
 @section('content')
     <h2>1. Requirements Check</h2>
     <hr>
-    @include ('install.messages')
+    @include ('installer::messages')
     <div class="box">
         <p>Please make sure the PHP extensions listed below are installed.</p>
 

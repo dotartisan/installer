@@ -1,10 +1,10 @@
-@extends('install.layout')
+@extends('installer::layout')
 
 @section('content')
     <h2>2. Verify Purchase</h2>
     <hr>
 
-    @include('install.messages')
+    @include('installer::messages')
 
     @php
         $isEnvato = config('artisan.source') === 'envato';

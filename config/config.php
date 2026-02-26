@@ -23,5 +23,5 @@ return [
     /**
      * Do not change or remove this like.
      */
-    'encrypt_key' => '4wz1qYJ8gDKG6Sjb3ylPmrTUCwsp9i4U',
+    'encrypt_key' => 'base64:NHd6MXFZSjhnREtHNlNqYjN5bFBtclRVQ3dzcDlpNFU=',
 ];

@@ -5,6 +5,7 @@ namespace Dotartisan\Installer\Install;
 use Dotartisan\Installer\Contracts\InstallServiceContract;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Session;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 use Setting;
 

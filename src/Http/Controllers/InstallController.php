@@ -96,6 +96,7 @@ class InstallController extends Controller
             $app->setup($request->website);
             $this->optimizeApp();
         } catch (Exception $e) {
+            info($e);
             return back()->withInput()->withError($e->getMessage());
         }
 

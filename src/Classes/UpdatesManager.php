@@ -215,7 +215,7 @@ class UpdatesManager
     {
         $this->item->beforeOptimize();
         try {
-            Artisan::call('cache:clear');
+            Cache::flush();
             Artisan::call('optimize');
         } catch (\Exception $e) {
             // keep silent (your original behavior)

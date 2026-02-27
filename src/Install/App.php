@@ -73,8 +73,12 @@ class App
     {
         $this->service->beforeOptimize();
 
-        Cache::flush();
-        Artisan::call('optimize');
+        try {
+            Cache::flush();
+            Artisan::call('optimize');
+        } catch (\Exception $e) {
+        }
+
 
         $this->service->afterOptimize();
     }

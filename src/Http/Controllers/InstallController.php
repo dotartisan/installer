@@ -130,9 +130,7 @@ class InstallController extends Controller
     {
         try {
             Cache::flush();
-            Artisan::call('config:cache');
-            Artisan::call('route:cache');
-            Artisan::call('event:cache');
+            Artisan::call('optimize');
         } catch (Exception $e) {
             info($e);
         }

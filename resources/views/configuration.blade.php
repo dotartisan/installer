@@ -1,4 +1,4 @@
-@extends('installer::layout')
+@extends('installer::layouts.layout')
 
 @section('content')
     <h2>3. Configuration</h2>

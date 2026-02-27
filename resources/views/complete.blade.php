@@ -1,4 +1,4 @@
-@extends('installer::layout')
+@extends('installer::layouts.layout')
 
 @section('content')
     <h2>4. Complete {{ request()->is('install/complete') }}</h2>

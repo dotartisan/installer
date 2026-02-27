@@ -3,6 +3,8 @@
 namespace App\Helpers\Classes;
 
 use Dotartisan\Installer\Services\Install\AbstractInstallService;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
 
 class InstallerInstallService extends AbstractInstallService
@@ -17,9 +19,11 @@ class InstallerInstallService extends AbstractInstallService
         return '1.0.0';
     }
 
+    /**
+     * Admin creation (item-specific)
+     */
     public function createAdmin(array $admin): void
     {
-        // implement your item admin creation
         $user = new User();
         $user->name = $admin['name'];
         $user->email = $admin['email'];
@@ -27,18 +31,55 @@ class InstallerInstallService extends AbstractInstallService
         $user->save();
     }
 
+    /**
+     * ENV keys extracted from your original App.php
+     */
     public function envKeys(array $website): array
     {
+        $appName  = $website['app_name'] ?? 'My App';
+        $appEmail = $website['app_email'] ?? 'admin@example.com';
+
+        // Original logic:
+        // secure_url(URL::route('social.login.callback', ['provider' => 'facebook'], false))
+        // secure_url(URL::route('social.login.callback', ['provider' => 'google'], false))
+        $facebookRedirect = secure_url(URL::route('social.login.callback', ['provider' => 'facebook'], false));
+        $googleRedirect   = secure_url(URL::route('social.login.callback', ['provider' => 'google'], false));
+
         return [
-            'APP_NAME' => $website['app_name'] ?? 'My App',
-            'APP_URL' => url('/'),
+            'APP_URL'           => url('/'),
+            'APP_NAME'          => $appName,
+            'APP_ENV'           => 'production',
+            'APP_DEBUG'         => 'true',
+            'DEBUGBAR_ENABLED'  => 'false',
+
+            'MAIL_MAILER'       => 'mail',
+            'MAIL_FROM_NAME'    => $appName,
+            'MAIL_FROM_ADDRESS' => $appEmail,
+
+            'FACEBOOK_URL'      => $facebookRedirect,
+            'GOOGLE_URL'        => $googleRedirect,
         ];
     }
 
+    /**
+     * Settings extracted from your original App.php
+     */
     public function settings(array $website): array
     {
-        return [
-            'app_name' => $website['app_name'] ?? 'My App',
+        $appName  = $website['app_name'] ?? 'My App';
+        $appEmail = $website['app_email'] ?? 'admin@example.com';
+
+        $settings = [
+            'app_url'       => url('/'),
+            'app_name'      => $appName,
+            'meta_title'    => $appName,
+            'website_email' => $appEmail,
         ];
+
+        if (Session::has('purchase_code')) {
+            $settings['purchase_code'] = Session::get('purchase_code');
+        }
+
+        return $settings;
     }
 }

@@ -1,4 +1,4 @@
-@extends('installer::layout')
+@extends('installer::layouts.layout')
 
 @section('content')
     <h2>2. Verify Purchase</h2>
@@ -27,10 +27,9 @@
         </div>
     @else
         <form method="POST" action="{{ route('verify.register') }}">
+            @csrf
             <div class="box">
                 <div class="configure-form">
-                    @csrf
-
                     @if ($canProceed)
                         Purchase verified successfully, please continue to next step.
                     @else
@@ -41,7 +40,6 @@
                                 placeholder="Please enter your purchase code to verify your copy of MonsterTools.">
                         </div>
                     @endif
-
                 </div>
             </div>
             <div class="content-buttons mt-3 text-end">

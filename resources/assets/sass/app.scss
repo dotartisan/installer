@@ -1,6 +1,7 @@
-// Override Boostrap variables
-@import "bootstrap/scss/bootstrap";
+@import "bootstrap/scss/functions";
 @import "variables"; // Bootstrap
+@import "bootstrap/scss/bootstrap";
+@import "components/icons";
 
 .left-sidebar {
     width: 28%;

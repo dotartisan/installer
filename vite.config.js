@@ -2,6 +2,10 @@ import { defineConfig } from "vite";
 import path from "path";
 
 export default defineConfig({
+    base: "./",
+    esbuild: {
+        charset: "ascii",
+    },
     build: {
         outDir: "resources/dist",
         emptyOutDir: true,
@@ -13,9 +17,11 @@ export default defineConfig({
             output: {
                 entryFileNames: "installer.js",
                 assetFileNames: (assetInfo) => {
-                    if (assetInfo.name && assetInfo.name.endsWith(".css")) return "installer.css";
-                    return "[name][extname]";
-                }
+                    const name = assetInfo.name || "";
+                    if (name.endsWith(".css")) return "installer.css";
+                    if (/\.(woff2?|ttf|eot|svg)$/.test(name)) return "[name][extname]";
+                    return "[name]-[hash][extname]";
+                },
             }
         }
     }

@@ -44,6 +44,7 @@ class InstallController extends Controller
                 return redirect('/install/pre-installation');
             }
 
+
             $response = $artisan->register($request);
             $data = $response->getData();
 

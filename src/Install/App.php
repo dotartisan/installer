@@ -65,8 +65,8 @@ class App
             foreach ($settings as $key => $value) {
                 Setting::set($key, $value);
             }
-            Setting::save();
         }
+        Setting::save();
     }
 
     private function optimize(): void

@@ -127,7 +127,13 @@ class InstallController extends Controller
 
     private function optimizeApp()
     {
-        Cache::flush();
-        Artisan::call('optimize');
+        try {
+            Cache::flush();
+            Artisan::call('config:cache');
+            Artisan::call('route:cache');
+            Artisan::call('event:cache');
+        } catch (Exception $e) {
+            info($e);
+        }
     }
 }

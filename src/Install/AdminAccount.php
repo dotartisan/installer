@@ -11,10 +11,7 @@ class AdminAccount
     public function setup(array $admin): void
     {
         $admin = $this->service->beforeAdminSetup($admin);
-
-        // Item decides how to create admin user (model, roles, etc.)
         $this->service->createAdmin($admin);
-
         $this->service->afterAdminSetup($admin);
     }
 }

@@ -21,7 +21,6 @@ class App
         $this->writeEnvAndSettings($website);
         $this->optimize();
 
-        // if you want an after hook after everything in App step:
         $this->service->afterEnvWritten($website);
     }
 
@@ -32,19 +31,34 @@ class App
 
     private function storageLink(): void
     {
-        // Keep if your items rely on it
         Artisan::call('storage:link');
     }
 
     private function writeEnvAndSettings(array $website): void
     {
         $env = DotenvEditor::load();
+        $env->setKey('APP_URL', url('/'));
+        $env->setKey('APP_NAME', $website['app_name']);
+        $env->setKey('APP_ENV', 'production');
+        $env->setKey('APP_DEBUG', 'false');
+        $env->setKey('DEBUGBAR_ENABLED', 'false');
+        $env->setKey('MAIL_MAILER', 'smtp');
+        $env->setKey('MAIL_FROM_NAME', $website['app_name']);
+        $env->setKey('MAIL_FROM_ADDRESS', $website['app_email']);
+
         foreach ($this->service->envKeys($website) as $k => $v) {
             $env->setKey((string) $k, (string) ($v ?? ''));
         }
-
         $env->save();
 
+
+        Setting::set('app_url', url('/'));
+        Setting::set('app_name', $website['app_name']);
+        Setting::set('meta_title', $website['app_name']);
+        Setting::set('website_email', $website['app_email']);
+        if (Session::has('purchase_code')) {
+            Setting::set('purchase_code', Session::get('purchase_code'));
+        }
         $settings = $this->service->settings($website);
         if (!empty($settings)) {
             foreach ($settings as $key => $value) {

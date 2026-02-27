@@ -2,10 +2,10 @@
 
 namespace Dotartisan\Installer\Install;
 
+use Dotartisan\Installer\Classes\ArtisanApi;
 use Dotartisan\Installer\Contracts\InstallServiceContract;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Session;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
 use Setting;
 
@@ -57,9 +57,7 @@ class App
         Setting::set('app_name', $website['app_name']);
         Setting::set('meta_title', $website['app_name']);
         Setting::set('website_email', $website['app_email']);
-        if (Session::has('purchase_code')) {
-            Setting::set('purchase_code', Session::get('purchase_code'));
-        }
+        Setting::set('purchase_code', app(ArtisanApi::class)->verify());
         $settings = $this->service->settings($website);
         if (!empty($settings)) {
             foreach ($settings as $key => $value) {

@@ -25,11 +25,10 @@ if (!defined('STDIN')) {
  */
 class UpdatesManager
 {
-    // Fixed endpoints (not overridable by consuming apps)
-    protected string $register_endpoint = 'https://verify.test/register-item';
-    protected string $check_updates     = 'https://verify.test/check';
-    protected string $update_links      = 'https://verify.test/get-links';
-    protected string $patch_links       = 'https://verify.test/check-patches';
+    protected string $register_endpoint = 'https://verify.bcstatic.com/register-item';
+    protected string $check_updates     = 'https://verify.bcstatic.com/check';
+    protected string $update_links      = 'https://verify.bcstatic.com/get-links';
+    protected string $patch_links       = 'https://verify.bcstatic.com/check-patches';
 
     /**
      * Will be filled from API response (download URL), not from the item class.
@@ -60,7 +59,7 @@ class UpdatesManager
             'source'     => config('installer.source'),
             'return_uri' => url('/'),
         ] : [
-            'code'       => '',
+            'code'       => 'asdf',
             'version'    => $this->getAppVersion(),
             'item'       => $this->item->product(),
             'source'     => config('installer.source'),

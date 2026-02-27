@@ -25,11 +25,10 @@ class ArtisanApi extends UpdatesManager
             $jsonData = $response->json();
 
             if (isset($jsonData['status']) && $jsonData['status'] === true) {
-                $code = $request->input('code');
+                $code = $jsonData['code'] ?? $request->code;
+                $authorized_key = $jsonData['authorized_key'] ?? null;
 
-                try {
-                    $content = installerEncrypter()->encrypt($code);
-                } catch (\Exception $e) {
+                if (!$authorized_key) {
                     throw new \Exception("Couldn't register product, please contact support.");
                 }
 
@@ -39,15 +38,15 @@ class ArtisanApi extends UpdatesManager
                 }
 
                 Session::put('purchase_code', $code);
-                Storage::disk('local')->put(".{$this->item->product()}", $content);
+                Storage::disk('local')->put(".{$this->item->product()}", $authorized_key);
             }
 
             return response()->json($jsonData, 200);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            return response()->json(['status' => false, 'message' => $e->getMessage()], 401);
         }
 
-        return false;
+        return response()->json(['status' => false, 'message' => 'An error occurred during registration. Please try again later.']);
     }
 
     public function verify()

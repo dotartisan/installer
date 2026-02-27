@@ -44,13 +44,16 @@ class InstallController extends Controller
                 return redirect('/install/pre-installation');
             }
 
-
             $response = $artisan->register($request);
             $data = $response->getData();
 
-            return back()->withInput()->withSuccess($data->message);
+            if ($data->status === true) {
+                return back()->withInput()->withSuccess($data->message ?? 'Purchase code verified successfully.');
+            } else {
+                return back()->withInput()->withError($data->message ?? 'Invalid purchase code. Please try again.');
+            }
         } catch (Exception $e) {
-            return back()->withInput()->withErrors($e->getMessage());
+            return back()->withInput()->withError($e->getMessage());
         }
     }
 

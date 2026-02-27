@@ -35,9 +35,12 @@
                     @else
                         <div class="mb-3">
                             <label for="code" class="form-label">Purchase Code</label>
-                            <input type="text" class="form-control" id="code" name="code"
-                                value="{{ old('code', session('code', '')) }}" required
-                                placeholder="Please enter your purchase code to verify your copy of MonsterTools.">
+                            <input type="text" class="form-control @error('code') is-invalid @enderror" id="code"
+                                name="code" value="{{ old('code', session('code', '')) }}" required
+                                placeholder="Please enter your purchase code to verify your copy of MonsterTools">
+                            @error('code')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     @endif
                 </div>

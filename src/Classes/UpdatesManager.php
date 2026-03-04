@@ -358,6 +358,8 @@ class UpdatesManager
             include_once(resource_path('cleanup.php'));
         }
 
+        $this->optimizeClearApp();
+
         // Your original runUpdate call stays
         $this->runUpdate();
 

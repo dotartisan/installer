@@ -420,31 +420,51 @@ class UpdatesManager
         try {
             $path = base_path('tmp.zip');
 
-            // Save downloaded data here
-            $fp = fopen($path, 'w+');
+            $fp = fopen($path, 'wb');
 
-            // Replace spaces
-            $ch = curl_init(str_replace(" ", "%20", $url));
+            if (!$fp) {
+                throw new \Exception("Unable to create file for download.");
+            }
 
-            curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+            $ch = curl_init();
 
-            // send post data
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($this->verifyData));
+            curl_setopt_array($ch, [
+                CURLOPT_URL => str_replace(" ", "%20", $url),
+                CURLOPT_RETURNTRANSFER => false,
+                CURLOPT_FILE => $fp,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT => 600,
+                CURLOPT_CONNECTTIMEOUT => 30,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => http_build_query($this->verifyData),
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_SSL_VERIFYHOST => 2,
+                CURLOPT_FAILONERROR => true,
+            ]);
 
-            // write curl response to file
-            curl_setopt($ch, CURLOPT_FILE, $fp);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            $result = curl_exec($ch);
 
-            curl_exec($ch);
+            if ($result === false) {
+                throw new \Exception('Curl error: ' . curl_error($ch));
+            }
 
-            curl_close($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($httpCode !== 200) {
+                throw new \Exception("Download failed with HTTP status: " . $httpCode);
+            }
+
             fclose($fp);
-        } catch (\Exception $e) {
+
+            return $path;
+        } catch (\Throwable $e) {
+
+            if (isset($fp) && is_resource($fp)) {
+                fclose($fp);
+            }
+
             Session::flash('error', $e->getMessage());
             return false;
         }
-
-        return $path;
     }
 
     public function checkRequirements($requirements_link)

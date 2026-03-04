@@ -19,8 +19,8 @@
         "php": "^8.0",
         "akaunting/laravel-setting": "^1.2",
         "illuminate/support": "^10.0 || ^11.0 || ^12.0 || ^13.0",
-        "zanysoft/laravel-zip": "^2.0",
-        "jackiedo/dotenv-editor": "^2.0",
+        "zanysoft/laravel-zip": "^2.0 || ^2.3",
+        "jackiedo/dotenv-editor": "^1.0 || ^2.0",
         "igaster/laravel-theme": "^2.0"
     },
     "require-dev": {

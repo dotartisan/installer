@@ -69,9 +69,9 @@ class ArtisanApi extends UpdatesManager
         $license = $data['license'] ?? null;
         $code = $data['code'] ?? null;
 
-        if (config('artisan.installed') && setting('purchase_code', null) === $code) {
+        if (config('installer.installed') && setting('purchase_code', null) === $code) {
             return $license;
-        } else if (!config('artisan.installed')) {
+        } else if (!config('installer.installed')) {
             return $license;
         }
     }

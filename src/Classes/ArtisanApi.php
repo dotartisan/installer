@@ -67,8 +67,20 @@ class ArtisanApi extends UpdatesManager
     {
         $data = $this->getLicenseData();
         $license = $data['license'] ?? null;
+        $code = $data['code'] ?? null;
 
-        return $license;
+        if (config('artisan.installed') && setting('purchase_code', null) === $code) {
+            return $license;
+        } else if (!config('artisan.installed')) {
+            return $license;
+        }
+    }
+
+    public function isExtended()
+    {
+        $license = $this->license();
+
+        return Str::contains($license, "\x45\170\164\x65\156\144\x65\x64");
     }
 
     protected function getLicenseData()

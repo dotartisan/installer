@@ -84,13 +84,6 @@ class ArtisanApi extends UpdatesManager
         return Str::contains($license, "\x45\170\164\x65\156\144\x65\x64");
     }
 
-    public function isExtended()
-    {
-        $license = $this->license();
-
-        return Str::contains($license, "\x45\170\164\x65\156\144\x65\x64");
-    }
-
     protected function getLicenseData()
     {
         $data = null;

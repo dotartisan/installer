@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Setting;
 
 class ArtisanApi extends UpdatesManager
@@ -69,6 +70,13 @@ class ArtisanApi extends UpdatesManager
         $license = $data['license'] ?? null;
 
         return $license;
+    }
+
+    public function isExtended()
+    {
+        $license = $this->license();
+
+        return Str::contains($license, "\x45\170\164\x65\156\144\x65\x64");
     }
 
     protected function getLicenseData()

@@ -18,6 +18,7 @@ return [
     |
     */
     'route_middleware' => [
+        'web',
         \Dotartisan\Installer\Http\Middlewares\RedirectIfInstalled::class,
     ],
 
